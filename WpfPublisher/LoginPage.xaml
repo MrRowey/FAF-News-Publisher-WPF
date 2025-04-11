@@ -1,0 +1,19 @@
+﻿<Page x:Class="WpfPublisher.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfPublisher"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="LoginPage">
+
+    <StackPanel Margin="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="Authenticate with Github" FontSize="20" Margin="0 0 0 20"/>
+        <Button Content="Login with Github" Click="Login_Click" Width="200"/>
+        <TextBox x:Name="CodeBox" Margin="0 20 0 0" Width="200" Background="Gray"/>
+        <Button Content="Submit Code" Click="SubmitCode_Click" Width="200"/>
+        <TextBlock x:Name="StatusText" Margin="0 10 0 0" Foreground="Green"/>
+    </StackPanel>
+    
+</Page>
