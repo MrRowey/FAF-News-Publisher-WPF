@@ -11,7 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using WpfPublisher.Core;
+using WpfPublisher.Auth;
 
 namespace WpfPublisher
 {
