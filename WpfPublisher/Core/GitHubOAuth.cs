@@ -37,29 +37,50 @@ namespace WpfPublisher.Core
 
         public async Task<string> GetAccessToken(string code)
         {
-            var client = new HttpClient();
-            var url = "https://github.com/login/oauth/access_token";
+            Debug.WriteLine("Entering GetAccsesToken...");
+            try
+            {
+                var client = new HttpClient();
+                var url = "https://github.com/login/oauth/access_token";
 
-            var content = new FormUrlEncodedContent(
-            [
-               new KeyValuePair<string, string>("client_id", _clientId),
+                var content = new FormUrlEncodedContent(
+                [
+                   new KeyValuePair<string, string>("client_id", _clientId),
             new KeyValuePair<string, string>("client_secret", _clientSecret),
             new KeyValuePair<string, string>("code", code),
             new KeyValuePair<string, string>("redirect_uri", _redirectUri)
-            ]);
+                ]);
 
-            var response = await client.PostAsync(url, content);
-            var responseString = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine("Sending request to GitHub for access token...");
+                var response = await client.PostAsync(url, content);
+                var responseString = await response.Content.ReadAsStringAsync();
 
-            Debug.WriteLine($"Raw Response from GitHub: {responseString}");
+                Debug.WriteLine($"Raw Response from GitHub: {responseString}");
 
-            // Extract the access token from the response (this assumes the response is in the form of "access_token=xxxx&scope=repo&token_type=bearer")
-            var accessToken = ParseAccessToken(responseString);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                    throw new InvalidOperationException($"GitHub OAuth error: {response.StatusCode} - {response.ReasonPhrase}");
+                }
 
-            // Save the access token to a file for later use
-            SaveAccessToken(accessToken);
+                // Extract the access token from the response (this assumes the response is in the form of "access_token=xxxx&scope=repo&token_type=bearer")
+                var accessToken = ParseAccessToken(responseString);
 
-            return accessToken;
+                // Save the access token to a file for later use
+                SaveAccessToken(accessToken);
+
+                Debug.WriteLine("Access token retrieved and saved successfully.");
+                return accessToken;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error in GetAccessToken: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                Debug.WriteLine("Exiting GetAccsesToken...");
+            }
         }
 
         private static string ParseAccessToken(string response)
@@ -82,7 +103,7 @@ namespace WpfPublisher.Core
         public void SaveAccessToken(string accessToken)
         {
             var directory = Path.GetDirectoryName(_tokenFilePath);
-            if(!Directory.Exists(directory))
+            if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }

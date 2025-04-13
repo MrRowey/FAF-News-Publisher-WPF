@@ -34,7 +34,7 @@ namespace WpfPublisher
             try
             {
                 var authCode = await _auth.CaptureAuthCodeAsync();
-                var accessToken = await _auth.GetAccessToken(authCode); // Store the access token
+                _accessToken = await _auth.GetAccessToken(authCode); // Store the access token
 
                 StatusText.Text = "Login successful!";
                 NavigationService.Navigate(new PostPage(_accessToken));
