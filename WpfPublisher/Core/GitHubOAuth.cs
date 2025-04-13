@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Windows;
 using System.Diagnostics;
 using System.IO;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace WpfPublisher.Core
 {
@@ -122,15 +123,15 @@ namespace WpfPublisher.Core
                 Height = 600,
             };
 
-            var webBrowser = new System.Windows.Controls.WebBrowser();
+            var webView = new WebView2();
             bool isComplete = false; // Flag to track if the process is completed once
 
-            webBrowser.Navigated += (sender, e) =>
+            webView.NavigationCompleted += (sender, e) =>
             {
                 try
                 {
 
-                    var uri = e.Uri;
+                    var uri = new Uri(webView.Source.ToString());
                     Debug.WriteLine($"Navigated to: {uri.AbsoluteUri}");
 
                     if (uri.AbsoluteUri.StartsWith(_redirectUri, StringComparison.OrdinalIgnoreCase) && !isComplete)
@@ -168,14 +169,15 @@ namespace WpfPublisher.Core
             };
 
 
-            browserWindow.Content = webBrowser;
+            browserWindow.Content = webView;
             browserWindow.Show();
             Debug.WriteLine("Browser window displayed for user authorization.");
 
             // Navigate to the GitHub authorization URL
             var authorizationUrl = GetAuthorizationUrl();
             Debug.WriteLine($"Navigating to GitHub authorization URL: {authorizationUrl}");
-            webBrowser.Navigate(authorizationUrl);
+            await webView.EnsureCoreWebView2Async();
+            webView.Source = new Uri(authorizationUrl);
 
             return await tcs.Task;
         }
