@@ -24,12 +24,13 @@ namespace WpfPublisher
 
         private  readonly GitHubPullRequest _pullRequest;
         private string _accessToken;
+        private string _userRepoOwner = "MrRowey"; // Replace with your GitHub username
 
         public PostPage(string accessToken)
         {
             InitializeComponent();
             _accessToken = accessToken;
-            _pullRequest = new GitHubPullRequest(_accessToken);
+            _pullRequest = new GitHubPullRequest(_accessToken, _userRepoOwner );
         }
 
 

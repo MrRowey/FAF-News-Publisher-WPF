@@ -21,7 +21,7 @@ namespace WpfPublisher.Core
         {
             // Constructor can be used for any initialization if needed
             _clientId = "Ov23lirrCNvEXZDOD5P7"; // Environment.GetEnvironmentVariable("CLIENT_ID");
-            _clientSecret = "740dcd6626ed8ff26cfa38b75f3b012cfb3ec54c"; // Environment.GetEnvironmentVariable("CLIENT_SECRET");
+            _clientSecret = ""; // Environment.GetEnvironmentVariable("CLIENT_SECRET");
 
             if (string.IsNullOrEmpty(_clientId) || string.IsNullOrEmpty(_clientSecret))
             {
