@@ -1,40 +1,48 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Web;
+﻿using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace WpfPublisher.Core
 {
-    public class GitHubPullRequest(string accessToken)
+    public class GitHubPullRequest
     {
-        private readonly string _accessToken = accessToken;
+        private readonly string _accessToken;
+        private static readonly HttpClient _httpClient = new();
+
         private readonly string _repoOwner = "MrRowey";
         private readonly string _repoName = "faf-new-website";
         private readonly string _defaultBranch = "main"; // Usually "main"
 
+        public GitHubPullRequest(string accessToken)
+        {
+            _accessToken = accessToken;
+            if (!_httpClient.DefaultRequestHeaders.Contains("Authorization"))
+            {
+                _httpClient.DefaultRequestHeaders.Add("Authorization", "token " + _accessToken);
+                _httpClient.DefaultRequestHeaders.Add("User-Agent", "JekyllPublisher");
+            }
+        }
+
         public async Task CreatePullRequest(string title, string content)
         {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "token " + _accessToken);
-            client.DefaultRequestHeaders.Add("User-Agent", "JekyllPublisher");
+            
+            _httpClient.DefaultRequestHeaders.Add("Authorization", "token " + _accessToken);
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "JekyllPublisher");
 
             // Step 1: Get the latest commit SHA from the default branch (e.g., 'main')
-            var commitSha = await GetLatestCommitSha(client);
+            var commitSha = await GetLatestCommitSha(_httpClient);
 
             // Step 2: Create a new branch from the latest commit SHA
             var newBranchName = $"post/{title.Replace(" ", "-")}";
-            await CreateNewBranch(client, commitSha, newBranchName);
+            await CreateNewBranch(_httpClient, commitSha, newBranchName);
 
             // Step 3: Create the markdown file in the '_posts' folder
             var fileName = $"{DateTime.Now:yyyy-MM-dd}-{title.Replace(" ", "-")}.md";
             var fileContent = $"---\ntitle: {title}\ndate: {DateTime.Now:yyyy-MM-dd HH:mm:ss}\nlayout: post\n---\n\n{content}";
-            await CreateFile(client, fileName, fileContent, newBranchName);
+            await CreateFile(_httpClient, fileName, fileContent, newBranchName);
 
             // Step 4: Create a Pull Request
-            var prCreated = await CreatePullRequest(client, newBranchName, title);
+            var prCreated = await CreatePullRequest(_httpClient, newBranchName, title);
 
             if (prCreated)
             {
@@ -57,7 +65,7 @@ namespace WpfPublisher.Core
         private async Task CreateNewBranch(HttpClient client, string commitSha, string branchName)
         {
             // Sanitize the branch name to remove special characters
-            var sanitizedBranchName = branchName.Replace(" ", "-");
+            var sanitizedBranchName = branchName.Replace(" ", "-").Replace("_", "-");
 
             var url = $"https://api.github.com/repos/{_repoOwner}/{_repoName}/git/refs";
 
@@ -76,7 +84,7 @@ namespace WpfPublisher.Core
             client.DefaultRequestHeaders.Add("User-Agent", "JekyllPublisher");
 
             // Make the POST request to create the new branch
-            var response = await client.PostAsync(url, content);
+            var response = await client.PostAsync(url, content).ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {

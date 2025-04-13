@@ -10,9 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using WpfPublisher.Core;
 
 namespace WpfPublisher
@@ -24,17 +22,29 @@ namespace WpfPublisher
     {
 
         private readonly GitHubOAuth _auth = new();
+        private string _accessToken;
 
         public LoginPage()
         {
             InitializeComponent();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
-            // Open the GitHub OAuth authorization URL in the default web browser
-            var url = _auth.GetAuthorizationUrl();
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true});
+            try
+            {
+                var authCode = await _auth.CaptureAuthCodeAsync();
+                var accessToken = await _auth.GetAccessToken(authCode); // Store the access token
+
+                StatusText.Text = "Login successful!";
+                NavigationService.Navigate(new PostPage(_accessToken));
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors that occur during the login process
+                StatusText.Text = "Error: " + ex.Message;
+                StatusText.Foreground = Brushes.Red;
+            }
         }
 
         private async void SubmitCode_Click(object sender, RoutedEventArgs e)
@@ -43,12 +53,10 @@ namespace WpfPublisher
             try
             {
                 string code = CodeBox.Text.Trim();
-                string token = await _auth.GetAccessToken(code);
+                _accessToken = await _auth.GetAccessToken(code);
 
-                MainWindow.AccessToken = token;
                 StatusText.Text = "Login successful!";
-
-                NavigationService.Navigate(new PostPage());
+                NavigationService.Navigate(new PostPage(_accessToken));
             }
             catch (Exception ex)
             {
@@ -57,8 +65,5 @@ namespace WpfPublisher
                 StatusText.Foreground = Brushes.Red;
             }
         }
-
-
-
     }
 }

@@ -23,11 +23,13 @@ namespace WpfPublisher
     {
 
         private  readonly GitHubPullRequest _pullRequest;
+        private string _accessToken;
 
-        public PostPage()
+        public PostPage(string accessToken)
         {
             InitializeComponent();
-            _pullRequest = new GitHubPullRequest(MainWindow.AccessToken);
+            _accessToken = accessToken;
+            _pullRequest = new GitHubPullRequest(_accessToken);
         }
 
 
