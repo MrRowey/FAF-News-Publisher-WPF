@@ -1,0 +1,41 @@
+﻿<Page x:Class="WpfPublisher.Home"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfPublisher"
+      mc:Ignorable="d" 
+      Title="Home"
+      Background="#1E1E1E">
+
+    <Grid>
+        <!-- Centered Welcome Content -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+            <!-- App Title -->
+            <TextBlock Text="Welcome to FAF News Publisher"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       TextAlignment="Center"
+                       Margin="0 0 0 20"/>
+
+            <!-- Description -->
+            <TextBlock Text="This application allows you to create and manage posts for the FAForever website."
+                       FontSize="16"
+                       Foreground="LightGray"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Margin="0 0 0 20"/>
+
+            <!-- Get Started Button -->
+            <Button Content="Get Started"
+                    Width="200"
+                    Height="40"
+                    Background="#007ACC"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Center"
+                    Click="GetStarted_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

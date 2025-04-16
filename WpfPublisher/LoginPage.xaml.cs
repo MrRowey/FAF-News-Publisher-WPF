@@ -29,7 +29,7 @@ namespace WpfPublisher
             InitializeComponent();
         }
 
-        private async void Login_Click(object sender, RoutedEventArgs e)
+        private async void LoginWithGitHub_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -52,8 +52,7 @@ namespace WpfPublisher
             // Get the access token using the provided code
             try
             {
-                string code = CodeBox.Text.Trim();
-                _accessToken = await _auth.GetAccessToken(code);
+                _accessToken = await _auth.GetAccessToken(_accessToken);
 
                 StatusText.Text = "Login successful!";
                 NavigationService.Navigate(new PostPage(_accessToken));

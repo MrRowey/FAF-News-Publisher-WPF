@@ -8,11 +8,82 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PostPage">
 
-    <StackPanel Margin="30">
-        <TextBlock Text="Create New Post" FontSize="20" Margin="0 0 0 20"/>
-        <TextBox x:Name="TitleBox" Margin="0 10 0 10"/>
-        <TextBox x:Name="ContentBox" AcceptsReturn="True" Height="200" TextWrapping="Wrap" Margin="0 10 0 10"/>
-        <Button Content="Submit Post" Click="SubmitPost_Click"/>
-        <TextBlock x:Name="StatusText" Margin="10 10 0 0" Foreground="Green"/>
-    </StackPanel>
+    <Grid>
+        <!-- ScrollViewer to ensure content fits within the window -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Title Section -->
+                <StackPanel Grid.Row="0" Margin="0 0 0 20">
+                    <TextBlock Text="Create New Post" FontSize="20" FontWeight="Bold" Margin="0 0 0 10" HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Form Section -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Labels -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                        <TextBlock Text="Title:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Date:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Categories:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Type:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Status:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Priority:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Redirect URL:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Image Path:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Image Alt Text:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Event Start Date:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Event End Date:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Event Image URL:" FontWeight="Bold" Margin="0 5"/>
+                        <TextBlock Text="Content:" FontWeight="Bold" Margin="0 5"/>
+                    </StackPanel>
+
+                    <!-- Input Fields -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                        <TextBox x:Name="TitleBox" Margin="0 5"/>
+                        <Grid Margin="0 5">
+                            <DatePicker x:Name="DatePicker" Width="150"/>
+                            <TextBox x:Name="TimeBox" Width="100" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBox x:Name="CategoriesBox" Margin="0 5"/>
+                        <ComboBox x:Name="TypeComboBox" Margin="0 5">
+                            <ComboBoxItem Content="Regular"/>
+                            <ComboBoxItem Content="Special"/>
+                        </ComboBox>
+                        <ComboBox x:Name="StatusComboBox" Margin="0 5">
+                            <ComboBoxItem Content="Live"/>
+                            <ComboBoxItem Content="Draft"/>
+                        </ComboBox>
+                        <TextBox x:Name="PriorityBox" Margin="0 5"/>
+                        <TextBox x:Name="RedirectURLBox" Margin="0 5"/>
+                        <TextBox x:Name="ImagePathBox" Margin="0 5"/>
+                        <TextBox x:Name="ImageAltBox" Margin="0 5"/>
+                        <Grid Margin="0 5">
+                            <DatePicker x:Name="EventStartDatePicker" Width="150"/>
+                            <TextBox x:Name="EventStartTimeBox" Width="100" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <Grid Margin="0 5">
+                            <DatePicker x:Name="EventEndDatePicker" Width="150"/>
+                            <TextBox x:Name="EventEndTimeBox" Width="100" HorizontalAlignment="Right"/>
+                        </Grid>
+                        <TextBox x:Name="EventImageBox" Margin="0 5"/>
+                        <TextBox x:Name="ContentBox" AcceptsReturn="True" Height="100" TextWrapping="Wrap" Margin="0 5"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Submit Button -->
+        <DockPanel VerticalAlignment="Bottom" Margin="20">
+            <Button Content="Submit Post" Click="SubmitPost_Click" HorizontalAlignment="Right" Width="100"/>
+        </DockPanel>
+    </Grid>
 </Page>

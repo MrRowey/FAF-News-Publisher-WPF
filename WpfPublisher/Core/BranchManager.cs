@@ -26,7 +26,7 @@ namespace WpfPublisher.Core
             Debug.WriteLine("Entering GetLatestCommitSha...");
             try
             {
-                var url = $"https://api.github.com/repos/{_userRepoOwner}/{_orgRepoName}/commits/{_defaultBranch}";
+                var url = $"https://api.github.com/repos/{_userRepoOwner}/{_orgRepoName}/commits/main";
                 Debug.WriteLine($"Getting latest commit SHA with URL: {url}");
                 var response = await _httpClient.GetStringAsync(url);
                 dynamic commit = JsonConvert.DeserializeObject(response);

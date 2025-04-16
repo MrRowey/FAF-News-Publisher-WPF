@@ -1,0 +1,39 @@
+﻿<Page x:Class="WpfPublisher.WikiPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      Title="WikiPage"
+      Background="#1E1E1E">
+
+    <Grid>
+        <!-- Sidebar for Topics -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Topics List -->
+        <Border Background="#2D2D30">
+            <ListBox x:Name="TopicsList"
+                     SelectionChanged="TopicsList_SelectionChanged"
+                     Foreground="White"
+                     Background="Transparent"
+                     BorderThickness="0">
+                <ListBoxItem Content="Getting Started" Tag="GettingStarted"/>
+                <ListBoxItem Content="Creating Posts" Tag="CreatingPosts"/>
+                <ListBoxItem Content="Settings Overview" Tag="SettingsOverview"/>
+            </ListBox>
+        </Border>
+
+        <!-- Content Area -->
+        <ScrollViewer Grid.Column="1" Margin="10">
+            <TextBlock x:Name="ContentText"
+                       Text="Select a topic from the left to learn more."
+                       Foreground="White"
+                       FontSize="16"
+                       TextWrapping="Wrap"/>
+        </ScrollViewer>
+    </Grid>
+</Page>

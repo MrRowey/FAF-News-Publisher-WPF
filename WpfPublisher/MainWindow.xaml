@@ -8,11 +8,23 @@
         Title="FAF News Publisher" Height="450" Width="800"
         Background="#1E1E1E">
     <Grid>
-        <!-- Fefining 2 colums: one for side nav and one for view window-->
+        <!-- Define Columns -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="5"/>
+            <!-- GridSplitter -->
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <DockPanel Grid.ColumnSpan="3" Background="#2D2D30" Height="50">
+            <TextBlock Text="FAF News Publisher"
+                       Foreground="White"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="10"/>
+        </DockPanel>
 
         <!-- Side Nav -->
         <Border Background="#2D2D30" CornerRadius="0 10 10 0">
@@ -35,9 +47,50 @@
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#3D3D3D"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#007ACC"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.Resources>
                 </ListView>
             </StackPanel>
         </Border>
-        <Frame x:Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
+
+        <!-- GridSplitter -->
+        <GridSplitter Grid.Column="1"
+                      Width="5"
+                      Background="#2D2D30"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch"
+                      ResizeBehavior="PreviousAndNext"/>
+
+        <!-- Main Frame -->
+        <Frame x:Name="MainFrame"
+               Grid.Column="2"
+               NavigationUIVisibility="Hidden"
+               Margin="10"
+               Background="#1E1E1E"
+               BorderBrush="#3D3D3D"
+               BorderThickness="1"/>
+
+        <!-- Footer -->
+        <Border Grid.ColumnSpan="3" Background="#2D2D30" Height="30" VerticalAlignment="Bottom">
+            <TextBlock Text="Status: Ready"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Margin="10"/>
+        </Border>
     </Grid>
 </Window>
